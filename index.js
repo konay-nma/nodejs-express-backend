@@ -3,6 +3,23 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
+const  cors = require('cors')
+app.use(cors())
+
+//middlewar functions demo
+const reqLogger = (req, res, next) => {
+  console.log('Method:', req.method)
+  console.log('Path:', req.path);
+  console.log('Body:', req.body)
+  console.log('---');
+  next()
+}
+app.use(reqLogger) 
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({error: 'unknown endpoint'})
+}
+
 let notes = [
   {
     id: 1,
@@ -49,6 +66,17 @@ app.delete('/api/notes/:id', (req, res) => {
   res.status(204).end() // no content response
 })
 
+app.put('/api/notes/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const note = notes.find(note => note.id === id)
+  if(!note) return res.status(404).end()
+  notes = notes.filter(note => note.id !== id)
+  const body = req.body
+  if (!body) return res.status(404).json({error : 'missing note'})
+  notes = notes.concat(body)
+  res.json(body)
+})
+
 //post
 app.post('/api/notes', (req, res) => {
 
@@ -66,6 +94,8 @@ app.post('/api/notes', (req, res) => {
   res.json(note)
 })
 
+
+
 const generateId = () => {
   const maxId = notes.length > 0
     ? Math.max(...notes.map(note => note.id))
@@ -73,7 +103,9 @@ const generateId = () => {
   return maxId +1
 }
 
-const PORT = 3001
+app.use(unknownEndpoint) // call after res
+
+const PORT = process.env.PORT ||3001
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`)
 })
