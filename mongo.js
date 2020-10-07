@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
@@ -7,28 +8,28 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 const url = `mongodb+srv://fullstack:${password}@cluster0.wtkrm.mongodb.net/note-app?retryWrites=true&w=majority`
-mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 const noteSchema = new mongoose.Schema({
-    content : String,
-    date: Date,
-    important: Boolean
+  content : String,
+  date: Date,
+  important: Boolean
 })
 
 const Note = mongoose.model('Note', noteSchema)
 const note = new Note({
-    content: 'mongoose is easy to use',
-    date: new Date(),
-    important: true
+  content: 'mongoose is easy to use',
+  date: new Date(),
+  important: true
 })
 
 
 //find all documents Model.find({})
-Note.find({important: true}).then(result => {
-    console.log('type of result', typeof result)
-    result.forEach(note => {
-        console.log(note)
-    })
-    mongoose.connection.close()
+Note.find({ important: true }).then(result => {
+  console.log('type of result', typeof result)
+  result.forEach(note => {
+    console.log(note)
+  })
+  mongoose.connection.close()
 })
 
 // note.save().then(result => {

@@ -10,7 +10,9 @@
     "log:pord": "heroku logs --tail",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "lint": "eslint ."
   },
   "author": "konay",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "mongoose": "^5.10.7"
   },
   "devDependencies": {
+    "eslint": "^7.10.0",
     "nodemon": "^2.0.4"
   }
 }
