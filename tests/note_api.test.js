@@ -7,13 +7,25 @@ const Note = require('../models/note')
 
 beforeEach(async () => {
   await Note.deleteMany({})
-  let noteObj = new Note(helper.initialNote[0])
-  await noteObj.save()
-  noteObj = new Note(helper.initialNote[1])
-  await noteObj.save()
+  console.log('cleared')
+  const noteObj = helper.initialNote.map(note => new Note(note))
+  const promiseArray = noteObj.map(note => {
+    note.save()
+    console.log('saved')
+  })
+  await Promise.all(promiseArray)
+
+  // console.log('cleared')
+  // helper.initialNote.forEach(async (note) => {
+  //   let noteObj = new Note(note)
+  //   await noteObj.save()
+  //   console.log('saved')
+  // })
+  // console.log('done')
 })
 
 test('notes are return as json', async () => {
+  console.log('entered test')
   await api
     .get('/api/notes')
     .expect(200)
