@@ -8,11 +8,10 @@
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
     "log:pord": "heroku logs --tail",
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-
-    "lint": "eslint ."
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NOVE_ENV=development nodemon index.js",
+    "lint": "eslint .",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "konay",
   "license": "ISC",
@@ -23,7 +22,13 @@
     "mongoose": "^5.10.7"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint": "^7.10.0",
-    "nodemon": "^2.0.4"
+    "jest": "^26.5.2",
+    "nodemon": "^2.0.4",
+    "supertest": "^5.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
