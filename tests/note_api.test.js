@@ -8,13 +8,21 @@ const Note = require('../models/note')
 beforeEach(async () => {
   await Note.deleteMany({})
   console.log('cleared')
+  //good solution
   const noteObj = helper.initialNote.map(note => new Note(note))
   const promiseArray = noteObj.map(note => {
     note.save()
     console.log('saved')
   })
-  await Promise.all(promiseArray)
+  await Promise.all(promiseArray) //resolve promosied array to single one
+  //good solution
+  // for (let note of helper.initialNote) {
+  //   let noteObject = new Note(note)
+  //   await noteObject.save()
+  //   console.log('saved')
+  // }
 
+  //bad solution
   // console.log('cleared')
   // helper.initialNote.forEach(async (note) => {
   //   let noteObj = new Note(note)
